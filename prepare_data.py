@@ -15,11 +15,10 @@ import spacy
 from os.path import isfile, join
 from tqdm import tqdm
 
-from paths import EXPRESS_DATA_DIR, QUESTION_DATA_DIR, DATA_DIR
+from static import EXPRESS_DATA_DIR, QUESTION_DATA_DIR, DATA_DIR
 
 # define parameters
-CORRECT_LABEL = 1
-INCORRECT_LABEL = 0
+
 min_tokens = 5
 dataset = []
 nlp = spacy.load("en_core_web_sm")
@@ -84,12 +83,16 @@ split = int(len(dataset) * 0.8)
 train, test = dataset[:split], dataset[split:]
 
 
-def save_as_csv(filename, entries):
+def save_as_csv(filename, entries, header=None):
     with open(DATA_DIR + "/" + filename, "w+", encoding="utf-8", newline='') as csv_file:
         csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+        if header is not None:
+            csv_writer.writerow(header)
         for line in tqdm(entries):
-            csv_writer.writerow([' '.join(line[0]).strip(), line[1]])
+            row = [' '.join(line[0]).strip(), line[1]]
+            csv_writer.writerow(row)
 
 
-save_as_csv("generated_train.csv", train)
-save_as_csv("generated_test.csv", test)
+header = ["text", "label"]
+save_as_csv("generated_train.csv", train, header)
+save_as_csv("generated_test.csv", test, header)

@@ -5,3 +5,10 @@ fastapi==0.46.0
 pandas==0.25.3
 tqdm==4.41.1
 spacy==2.2.3
+transformers==2.3.0
+tensorboardX==2.0
+scipy==1.4.1
+scikit-learn==0.22.1
+fastapi==0.46.0
+uvicorn==0.11.1
+tensorflow==2.1.0

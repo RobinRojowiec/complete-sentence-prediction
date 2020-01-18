@@ -12,16 +12,22 @@ from simpletransformers.classification import ClassificationModel
 from sklearn.metrics import f1_score, accuracy_score
 
 # load data
-train_df = pd.read_csv('data/generated_train.csv', header=None, names=["text", "labels"])
-eval_df = pd.read_csv('data/generated_test.csv', header=None, names=["text", "labels"])
+train_df = pd.read_csv('data/generated_train.csv')
+
+print(train_df.head())
+
+eval_df = pd.read_csv('data/generated_test.csv')
 
 # define model
-model = ClassificationModel('roberta', 'roberta-base', num_labels=4,
-                            args={'reprocess_input_data': True, 'overwrite_output_dir': True, 'num_train_epochs': 5,
-                                  'fp16': False})
+# 'roberta', 'roberta-base'
+model_architecture = "bert-base-cased"
+model_type = "bert"
+model = ClassificationModel(model_name=model_architecture, model_type=model_type, num_labels=2,
+                            args={'reprocess_input_data': True, 'overwrite_output_dir': True, 'num_train_epochs': 1,
+                                  'fp16': False, 'use_multiprocessing': False})
 
 # training
-model.train(train_df, "output/")
+model.train_model(train_df)
 
 
 # evaluate
